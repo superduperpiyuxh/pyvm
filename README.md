@@ -55,4 +55,4 @@ Run `pyvm` without arguments to open the interactive manager.
 MIT
 
 ---
-Created by [piyuxhh](https://github.com/piyuxhh)
+Created by [superduperpiyuxh](https://github.com/superduperpiyuxh)
