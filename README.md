@@ -21,7 +21,7 @@
 
 ## 📸 Preview
 
-![PyVM TUI Interface](images/preview.png)
+![PyVM TUI Interface](images/tui-preview.png)
 *PyVM TUI in action showing version management.*
 
 ---
