@@ -2,6 +2,7 @@
 
 [![GitHub License](https://img.shields.io/github/license/superduperpiyuxh/pyvm)](LICENSE)
 [![Go Version](https://img.shields.io/badge/go-1.23+-blue.svg)](https://golang.org)
+[![CI](https://github.com/superduperpiyuxh/pyvm/actions/workflows/ci.yml/badge.svg)](https://github.com/superduperpiyuxh/pyvm/actions/workflows/ci.yml)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/superduperpiyuxh/pyvm/pulls)
 
 **PyVM** is a fast, zero-dependency Python version manager written in Go. It allows you to install, switch, and manage multiple Python environments instantly without needing a system Python or a compiler.
@@ -76,6 +77,17 @@ Add to your PowerShell profile:
 ```powershell
 . /path/to/pyvm/scripts/pyvm-completion.ps1
 ```
+
+---
+## 🔧 Troubleshooting
+
+### "Context deadline exceeded"
+This error indicates a network timeout during the initial fetch of Python versions. 
+- **Check your internet connection**: Ensure you can reach `api.github.com`.
+- **Firewall/Proxy**: If behind a corporate proxy or restrictive network, check your network settings.
+
+### "Command not found" or `pyvm` not working
+Ensure the PyVM shim directory is correctly added to your `PATH` as per the installation instructions. Verify by running `echo $PATH`.
 
 ---
 ## 📖 Usage
