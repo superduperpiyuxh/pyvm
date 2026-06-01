@@ -308,7 +308,9 @@ func applyColor(hex string) tea.Cmd {
 		styles.ApplyAccentColor(hex)
 		cfg := utils.LoadConfig()
 		cfg.AccentColor = hex
-		utils.SaveConfig(cfg)
+		if err := utils.SaveConfig(cfg); err != nil {
+			return utils.ErrMsg(fmt.Errorf("failed to save config: %v", err))
+		}
 		return ColorAppliedMsg{Color: hex}
 	}
 }

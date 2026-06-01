@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -167,7 +168,10 @@ func DeleteVersion(version string) {
 
 	fmt.Printf("⚠️  Delete Python %s? (y/N): ", matched.Version)
 	var response string
-	fmt.Scanln(&response)
+	if _, err := fmt.Scanln(&response); err != nil {
+		fmt.Println("🛑 Error reading input.")
+		return
+	}
 	if strings.ToLower(response) != "y" {
 		fmt.Println("🛑 Cancelled.")
 		return
@@ -277,10 +281,10 @@ func compareVersions(v1, v2 string) int {
 	for i := 0; i < maxLen; i++ {
 		var p1, p2 int
 		if i < len(parts1) {
-			fmt.Sscanf(parts1[i], "%d", &p1)
+			p1, _ = strconv.Atoi(parts1[i])
 		}
 		if i < len(parts2) {
-			fmt.Sscanf(parts2[i], "%d", &p2)
+			p2, _ = strconv.Atoi(parts2[i])
 		}
 		if p1 != p2 {
 			if p1 < p2 {

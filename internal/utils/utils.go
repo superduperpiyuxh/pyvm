@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -180,7 +181,9 @@ func FetchPythonVersions() tea.Msg {
 		return ErrMsg(err)
 	}
 	versionsDir := filepath.Join(homeDir, ".pyvm", "versions")
-	os.MkdirAll(versionsDir, 0755)
+	if err := os.MkdirAll(versionsDir, 0755); err != nil {
+		return ErrMsg(err)
+	}
 
 	// Active version: prefer our own file, fall back to whatever `python3` reports.
 	activeVersion := ""
@@ -388,7 +391,9 @@ func DownloadAndInstall(version PythonVersion) tea.Cmd {
 			if entries, err := os.ReadDir(binDir); err == nil {
 				for _, e := range entries {
 					if !e.IsDir() {
-						os.Chmod(filepath.Join(binDir, e.Name()), 0755)
+						if err := os.Chmod(filepath.Join(binDir, e.Name()), 0755); err != nil {
+							return ErrMsg(fmt.Errorf("failed to chmod: %v", err))
+						}
 					}
 				}
 			}
@@ -471,7 +476,9 @@ func SwitchVersion(version PythonVersion) tea.Cmd {
 				if err := os.WriteFile(shimPath, []byte(content), 0755); err != nil {
 					return ErrMsg(fmt.Errorf("failed to write shim for %s: %v", binName, err))
 				}
-				os.Chmod(shimPath, 0755)
+				if err := os.Chmod(shimPath, 0755); err != nil {
+					return ErrMsg(fmt.Errorf("failed to chmod shim: %v", err))
+				}
 			}
 		}
 
@@ -483,8 +490,12 @@ func SwitchVersion(version PythonVersion) tea.Cmd {
 				python3Bin := filepath.Join(binDir, "python3")
 				if _, err := os.Stat(python3Bin); err == nil {
 					content := fmt.Sprintf("#!/usr/bin/env bash\n\"%s\" \"$@\"\n", python3Bin)
-					os.WriteFile(pythonShim, []byte(content), 0755)
-					os.Chmod(pythonShim, 0755)
+					if err := os.WriteFile(pythonShim, []byte(content), 0755); err != nil {
+						return ErrMsg(fmt.Errorf("failed to write python shim: %v", err))
+					}
+					if err := os.Chmod(pythonShim, 0755); err != nil {
+						return ErrMsg(fmt.Errorf("failed to chmod python shim: %v", err))
+					}
 				}
 			}
 		}
@@ -528,10 +539,10 @@ func compareVersions(v1, v2 string) int {
 	for i := 0; i < maxLen; i++ {
 		var p1, p2 int
 		if i < len(parts1) {
-			fmt.Sscanf(parts1[i], "%d", &p1)
+			p1, _ = strconv.Atoi(parts1[i])
 		}
 		if i < len(parts2) {
-			fmt.Sscanf(parts2[i], "%d", &p2)
+			p2, _ = strconv.Atoi(parts2[i])
 		}
 		if p1 != p2 {
 			if p1 < p2 {
