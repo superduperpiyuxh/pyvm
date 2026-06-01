@@ -61,6 +61,18 @@ func InstallVersion(version string) {
 
 // UseVersion switches the active Python version.
 func UseVersion(version string) {
+	if version == "" {
+		detected, err := utils.FindVersionFile()
+		if err == nil {
+			fmt.Printf("📂 Found .python-version: %s\n", detected)
+			version = detected
+		} else {
+			fmt.Println("❌ No version provided and no .python-version file found.")
+			fmt.Println("Usage: pyvm use <version>")
+			return
+		}
+	}
+
 	fmt.Printf("🔍 Looking for installed Python version matching %s…\n", version)
 
 	matched, err := findInstalledVersion(version)

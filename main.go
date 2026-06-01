@@ -55,11 +55,11 @@ func handleCommandLine() {
 		cli.InstallVersion(cleanVersion(os.Args[2]))
 
 	case "use":
-		if len(os.Args) < 3 {
-			fmt.Println("Usage: pyvm use <version>")
-			os.Exit(1)
+		version := ""
+		if len(os.Args) >= 3 {
+			version = cleanVersion(os.Args[2])
 		}
-		cli.UseVersion(cleanVersion(os.Args[2]))
+		cli.UseVersion(version)
 
 	case "list", "ls":
 		cli.ListVersions()
