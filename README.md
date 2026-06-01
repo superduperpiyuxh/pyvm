@@ -56,9 +56,25 @@ Add `%USERPROFILE%\.pyvm\shim` to your **User Path Environment Variables**:
 
 ---
 ## 🐚 Shell Completion
-To enable auto-completion for `pyvm` in Bash, add the following to your `~/.bashrc` (replace `/path/to/pyvm` with the actual path):
+
+### Bash
+Add to `~/.bashrc`:
 ```bash
 source /path/to/pyvm/scripts/pyvm-completion.bash
+```
+
+### Zsh
+Add to `~/.zshrc`:
+```zsh
+autoload -U +X compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+source /path/to/pyvm/scripts/pyvm-completion.bash
+```
+
+### PowerShell
+Add to your PowerShell profile:
+```powershell
+. /path/to/pyvm/scripts/pyvm-completion.ps1
 ```
 
 ---
