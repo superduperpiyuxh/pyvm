@@ -55,8 +55,15 @@ Add `%USERPROFILE%\.pyvm\shim` to your **User Path Environment Variables**:
 4. Click **New** and add: `%USERPROFILE%\.pyvm\shim`
 
 ---
+## 🐚 Shell Completion
+To enable auto-completion for `pyvm` in Bash, add the following to your `~/.bashrc` (replace `/path/to/pyvm` with the actual path):
+```bash
+source /path/to/pyvm/scripts/pyvm-completion.bash
+```
 
+---
 ## 📖 Usage
+
 
 ### 🖥️ Interactive TUI Mode
 Simply run `pyvm` without any arguments to enter the visual manager:
