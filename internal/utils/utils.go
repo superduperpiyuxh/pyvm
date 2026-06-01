@@ -26,9 +26,32 @@ type PythonVersion struct {
 	Path      string
 }
 
-// ─── Directory helpers ──────────────────────────────────────────────────────
+// FindVersionFile looks for a .python-version file in the current directory or parent directories.
+func FindVersionFile() (string, error) {
+	dir, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
 
-// SetupShimDirectory creates ~/.pyvm/{shim,versions,downloads} if they don't exist.
+	for {
+		path := filepath.Join(dir, ".python-version")
+		if _, err := os.Stat(path); err == nil {
+			content, err := os.ReadFile(path)
+			if err != nil {
+				return "", err
+			}
+			return strings.TrimSpace(string(content)), nil
+		}
+
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+	return "", fmt.Errorf(".python-version not found")
+}
+
 func SetupShimDirectory() error {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
